@@ -11,7 +11,9 @@ export const TextStreamMessage = ({
   const [text] = useStreamableValue(content);
 
   return (
-    <div>{text}</div>
+    <div style={{ backgroundColor: 'white', color: 'black', borderRadius: '10px', margin: '10px', padding: '10px'}}>
+      <div>{text}</div>
+    </div>
   );
 };
 
@@ -23,8 +25,8 @@ export const Message = ({
   content: string | ReactNode;
 }) => {
   return (
-    <div>
-      <span>{role}</span>: <span>{content}</span>
+    <div style={{ backgroundColor: role === 'assistant' ? 'white' : 'lightgray', color: role === 'assistant' ? 'black' : '#333', borderRadius: '10px', margin: '10px', padding: '10px'}}>
+      <span style={{fontWeight: 'bold'}}>{role}</span>: <span>{content}</span>
     </div>
   );
 };

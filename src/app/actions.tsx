@@ -55,6 +55,7 @@ export async function continueConversation(
     const { value: stream } = await streamUI({
       model: bedrock('anthropic.claude-3-sonnet-20240229-v1:0'),
       messages: updatedMessages,
+      system: "You are a helpful assistant that can answer questions and help with tasks. You can also show images from the given url.",
       text: async function* ({ content, done }) {
         if (done) {
           history.done([
@@ -104,17 +105,19 @@ export async function continueConversation(
               },
             ]);*/
   
-            return <Message role="assistant" content={<ImageComponent url={url} />} />;
+            const result = <Message role="assistant" content={<ImageComponent url={url} />} />;
+            contentStream.done();
+            return result;
           },
         },
       },
     });
-  
     return stream;
   } catch (error) {
     console.error("Error in continueConversation:", error);
     contentStream.done();
-    throw error;
+    return <Message role="assistant" content={`An error occurred: ${error instanceof Error ? error.message : 'Unknown error'}`} />;
+
   }
 
 }
